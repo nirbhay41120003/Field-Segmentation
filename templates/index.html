@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricultural Land Segmentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .drop-zone {
+            border: 2px dashed #4a5568;
+            transition: all 0.3s ease;
+        }
+        .drop-zone.dragover {
+            border-color: #4299e1;
+            background-color: #ebf8ff;
+        }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        .feature-card {
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a5f7a 0%, #159957 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white">
+        <div class="container mx-auto px-4 py-16">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl font-bold mb-6">Agricultural Land Segmentation</h1>
+                <p class="text-xl mb-8">Advanced AI-powered video analysis for precision agriculture and land monitoring</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#upload" class="bg-white text-green-700 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors">
+                        Get Started
+                    </a>
+                    <a href="#features" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-green-700 transition-colors">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="feature-card bg-white p-6 rounded-xl shadow-lg">
+                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-camera text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">Real-time Analysis</h3>
+                    <p class="text-gray-600 text-center">Process aerial footage in real-time with advanced AI algorithms</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-lg">
+                    <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-chart-pie text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">Precise Segmentation</h3>
+                    <p class="text-gray-600 text-center">Accurate identification and segmentation of different land types</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-lg">
+                    <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-download text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">Easy Export</h3>
+                    <p class="text-gray-600 text-center">Download processed videos with segmentation overlays</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Section -->
+    <div id="upload" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8">Process Your Video</h2>
+                
+                <!-- Upload Box -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <div id="drop-zone" class="drop-zone rounded-lg p-8 text-center cursor-pointer">
+                        <div class="text-gray-600">
+                            <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4 mx-auto">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-green-600"></i>
+                            </div>
+                            <p class="text-lg mb-2 font-semibold">Drag and drop your video here</p>
+                            <p class="text-sm text-gray-500">or click to select a file</p>
+                            <p class="text-xs text-gray-400 mt-2">Supported formats: MP4, AVI, MOV, MKV (Max size: 500MB)</p>
+                        </div>
+                    </div>
+                    <input type="file" id="file-input" class="hidden" accept=".mp4,.avi,.mov,.mkv">
+                </div>
+
+                <!-- Progress Bar -->
+                <div id="progress-container" class="hidden bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <div class="mb-2 flex justify-between">
+                        <span class="text-sm font-medium text-gray-700">Processing video...</span>
+                        <span id="progress-text" class="text-sm font-medium text-gray-700">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="progress-bar" class="progress-bar bg-green-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div id="result-container" class="hidden bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Processed Video</h2>
+                    <div class="aspect-w-16 aspect-h-9 mb-4 bg-black rounded-lg overflow-hidden">
+                        <video id="processed-video" class="w-full" controls>
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button id="download-btn" class="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center">
+                            <i class="fas fa-download mr-2"></i>
+                            Download Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-gray-400"> 2025 Agricultural Land Segmentation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const resultContainer = document.getElementById('result-container');
+        const processedVideo = document.getElementById('processed-video');
+        const downloadBtn = document.getElementById('download-btn');
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Drag and drop handlers
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('dragover');
+            });
+        });
+
+        dropZone.addEventListener('drop', handleDrop);
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            handleFile(file);
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            handleFile(file);
+        }
+
+        function handleFile(file) {
+            if (!file) return;
+
+            // Show progress
+            progressContainer.classList.remove('hidden');
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+            resultContainer.classList.add('hidden');
+
+            const formData = new FormData();
+            formData.append('video', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Start polling for status
+                    pollStatus(data.task_id, data.filename);
+                } else {
+                    throw new Error(data.error || 'An error occurred during processing');
+                }
+            })
+            .catch(error => {
+                alert(error.message || 'An error occurred during upload');
+                progressContainer.classList.add('hidden');
+            });
+        }
+
+        function pollStatus(taskId, filename) {
+            const checkStatus = () => {
+                fetch(`/status/${taskId}`)
+                    .then(response => response.json())
+                    .then(status => {
+                        updateProgress(status.progress);
+                        
+                        if (status.completed) {
+                            showResult(filename);
+                        } else if (status.error) {
+                            throw new Error(status.error);
+                        } else {
+                            setTimeout(checkStatus, 1000); // Poll every second
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.message || 'An error occurred while checking status');
+                        progressContainer.classList.add('hidden');
+                    });
+            };
+            
+            checkStatus();
+        }
+
+        function updateProgress(value) {
+            progressBar.style.width = `${value}%`;
+            progressText.textContent = `${Math.round(value)}%`;
+        }
+
+        function showResult(filename) {
+            progressContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+            
+            // Add timestamp to prevent browser caching
+            const videoUrl = `/video/${filename}?t=${Date.now()}`;
+            processedVideo.src = videoUrl;
+            
+            downloadBtn.onclick = () => {
+                window.location.href = `/download/${filename}`;
+            };
+        }
+    </script>
+</body>
+</html>
